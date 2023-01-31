@@ -1,16 +1,22 @@
 # flutter_map1
 
-A new Flutter project.
+Practice for Japan App
 
-## Getting Started
+## Future Structure
 
-This project is a starting point for a Flutter application.
+I have a interest in traverling japan
+So, just making japan app will be fun
 
-A few resources to get you started if this is your first Flutter project:
+Sure, showing to market place is quite hard 
+But, after making this app, Maybe...?
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Main Page
+- some funny funcitons 
+2. Restaurant
+- reccomand restaurant
+3. Maps
+- find neaby gourmet following maps
+4. Attraction
+- introduce some spots
+5. Tips
+- general tips for traveler
