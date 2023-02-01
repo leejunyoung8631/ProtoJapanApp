@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 import 'package:flutter/material.dart';
 
 import 'home.dart';
@@ -9,6 +12,13 @@ import 'attraction.dart';
 import 'tips.dart';
 
 void main() {
+  // add firebase
+  // WFB == 나중을 위해
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+
   runApp(const MyApp());
 }
 

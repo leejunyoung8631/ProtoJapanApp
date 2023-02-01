@@ -46,3 +46,13 @@ app.*.map.json
 
 # for protecting API key
 ios/Runner/Storage.swift
+
+# for protecting firebase
+firebase_options.dart
+
+# for protecting APIKeys, if needed delete
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+ios/firebase_app_id_file.json
+macos/Runner/GoogleService-Info.plist
+macos/firebase_app_id_file.json
