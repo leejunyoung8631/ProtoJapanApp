@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_maps_flutter: ^2.2.3
   firebase_core: ^2.4.1
+  cloud_firestore: ^4.3.1
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +62,12 @@ flutter:
     - assets/images/money.jpg
     - assets/images/present.jpg
     - assets/images/vjw.jpg
+    - assets/etc/manner.json
+    - assets/etc/accomodation.json
+    - assets/etc/money.json
+    - assets/etc/present.json
+    - assets/etc/vjw.json
+    - assets/etc/unnamed.json
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

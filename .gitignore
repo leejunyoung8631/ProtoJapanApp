@@ -46,6 +46,7 @@ app.*.map.json
 
 # for protecting API key
 ios/Runner/Storage.swift
+AppDelegate.swift
 
 # for protecting firebase
 firebase_options.dart
