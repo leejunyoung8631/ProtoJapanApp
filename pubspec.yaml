@@ -39,6 +39,9 @@ dependencies:
   google_maps_flutter: ^2.2.3
   firebase_core: ^2.4.1
   cloud_firestore: ^4.3.1
+  http: ^0.13.5
+  geolocator: ^9.0.2
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +71,7 @@ flutter:
     - assets/etc/present.json
     - assets/etc/vjw.json
     - assets/etc/unnamed.json
+    - .env
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -1,5 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flutter_map1">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!--add for geoloacation-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!--add for geoloacation-->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- add for internet access of http--> 
+
    <application
         android:label="flutter_map1"
         android:name="${applicationName}"
