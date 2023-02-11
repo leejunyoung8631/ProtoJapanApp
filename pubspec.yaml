@@ -79,6 +79,7 @@ flutter:
     - assets/etc/vjw.json
     - assets/etc/unnamed.json
     - assets/etc/testcall.json
+    - assets/etc/testcall2.json
     - .env
 
   # The following line ensures that the Material Icons font is
