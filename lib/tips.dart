@@ -166,8 +166,6 @@ class _InfoPageState extends State<InfoPage> {
 
   Future<void> readJson(String S) async {
     S = S.toLowerCase();
-    // debugPrint(S);
-    // debugPrint("assets/etc/$S.json");
     final String response = await rootBundle.loadString("assets/etc/$S.json");
     final data = await json.decode(response);
 

@@ -42,6 +42,7 @@ dependencies:
   http: ^0.13.5
   geolocator: ^9.0.2
   flutter_dotenv: ^5.0.2
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:
@@ -65,12 +66,19 @@ flutter:
     - assets/images/money.jpg
     - assets/images/present.jpg
     - assets/images/vjw.jpg
+    - assets/images/Clear.png
+    - assets/images/Clouds.png
+    - assets/images/Snow.png
+    - assets/images/Rain.png
+    - assets/images/Thunderstorm.png
+    - assets/images/Null.png
     - assets/etc/manner.json
     - assets/etc/accomodation.json
     - assets/etc/money.json
     - assets/etc/present.json
     - assets/etc/vjw.json
     - assets/etc/unnamed.json
+    - assets/etc/testcall.json
     - .env
 
   # The following line ensures that the Material Icons font is
