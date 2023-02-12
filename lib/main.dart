@@ -17,9 +17,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart'; // for apikey
 void main() async {
   // add firebase
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: ".env");
 
   runApp(const MyApp());

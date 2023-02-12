@@ -19,7 +19,30 @@ class _HomePageState extends State<HomePage> {
 
   // final weather_api = dotenv.env['OPENWEATHER'];
 
-  /////////// temp//////??//////??//////??//////??//////??
+  // whole page
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Weather(),
+          RestaurantGenerator(),
+        ],
+      ),
+    );
+  }
+}
+
+// Showing Weather
+class Weather extends StatefulWidget {
+  Weather({key: Key});
+
+  @override
+  State<Weather> createState() => _StateWeather();
+}
+
+class _StateWeather extends State<Weather> {
+  // bring data
   Future<dynamic> readJson() async {
     final String response =
         await rootBundle.loadString("assets/etc/testcall2.json");
@@ -27,32 +50,6 @@ class _HomePageState extends State<HomePage> {
     debugPrint("read jsonfile");
 
     return WholeWeather(d);
-  }
-
-  //////??//////??//////??//////??//////??//////??//////??
-
-  Widget weather() {
-    return FutureBuilder(
-      future: readJson(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData == false) {
-          return CircularProgressIndicator();
-        } else {
-          return Expanded(
-            child: Column(
-              children: [
-                // today realtime
-                realtime(snapshot.data),
-                // today timeline
-                timeline(snapshot.data),
-                // future weather
-                futureweather(snapshot.data),
-              ],
-            ),
-          );
-        }
-      },
-    );
   }
 
   Widget realtime(var data) {
@@ -220,17 +217,142 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget restaurantGenerator() {
-    return Container();
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: readJson(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData == false) {
+          return CircularProgressIndicator();
+        } else {
+          return Column(
+            children: [
+              // today realtime
+              realtime(snapshot.data),
+              // today timeline
+              timeline(snapshot.data),
+              // future weather
+              futureweather(snapshot.data),
+            ],
+          );
+        }
+      },
+    );
   }
+}
+
+// Random generator of restaurant
+class RestaurantGenerator extends StatefulWidget {
+  RestaurantGenerator({key: Key});
+
+  @override
+  State<RestaurantGenerator> createState() => _RestaurantGeneratorState();
+}
+
+class _RestaurantGeneratorState extends State<RestaurantGenerator> {
+  final _area = ["Osaka", "Tokyo", "Fukuoka", "Kobe", "Nagoya"];
+  String _selectArea = "Osaka";
+  String component = "aa";
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        weather(),
-        restaurantGenerator(),
-      ],
+    return Container(
+      padding: EdgeInsets.all(5),
+      margin: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        border: Border.all(width: 1),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      height: 220,
+      child: Column(
+        children: [
+          Flexible(
+              flex: 1,
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Today, What to eat",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              )),
+          Flexible(
+            flex: 4,
+            child: (component == "aa")
+                ? Container(
+                    child: Text("dasdsadsd"),
+                    alignment: Alignment.center,
+                  ) // before clicking random
+                : Row(
+                    children: [
+                      // image of restaurant
+                      Flexible(
+                        flex: 2,
+                        child: Text("dsad"),
+                      ),
+                      // spec of restaurant
+                      Flexible(
+                          flex: 3,
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text("Category Name"),
+                                  Text("Menu : MenuName"),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text("location : "),
+                                  Text("location of restaurant"),
+                                ],
+                              ),
+                              Row(
+                                children: [Text("price : ")],
+                              ),
+                            ],
+                          )),
+                    ],
+                  ),
+          ),
+          Flexible(
+            flex: 1,
+            child: Row(
+              children: [
+                Text("   Selected Area : "),
+                DropdownButton(
+                  value: _selectArea,
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  items: _area.map<DropdownMenuItem<String>>((e) {
+                    return DropdownMenuItem<String>(
+                      value: e,
+                      child: Text(e),
+                    );
+                  }).toList(),
+                  onChanged: (String? e) {
+                    setState(() {
+                      _selectArea = e!;
+                    });
+                  },
+                ),
+                Expanded(child: Text("")),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        component = _selectArea;
+                      });
+                    },
+                    child: Text("Random")),
+                SizedBox(
+                  width: 10,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
