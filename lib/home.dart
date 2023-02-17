@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import "package:flutter/material.dart";
 import 'package:flutter_dotenv/flutter_dotenv.dart'; // for api key
 
@@ -6,6 +8,8 @@ import 'weather.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart'; // for restaturant generator
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -252,7 +256,34 @@ class RestaurantGenerator extends StatefulWidget {
 class _RestaurantGeneratorState extends State<RestaurantGenerator> {
   final _area = ["Osaka", "Tokyo", "Fukuoka", "Kobe", "Nagoya"];
   String _selectArea = "Osaka";
-  String component = "aa";
+  String component = "not-decided";
+
+  // For generated info
+  final firestore = FirebaseFirestore.instance;
+  var name = "",
+      recommend = "",
+      image_path = "",
+      category = "",
+      menu = "",
+      location = "",
+      price = "";
+
+  // then을 써야 불러 온 다음 행동을 할 수 있는 듯 싶다.
+  Future<void> resGenerate(String loac) async {
+    int len, randomIndex;
+    await firestore.collection(loac).get().then((QuerySnapshot querySnapshot) {
+      len = querySnapshot.docs.length;
+      randomIndex = Random().nextInt(len);
+      var temp = querySnapshot.docs.elementAt(randomIndex);
+      image_path = temp["picture"];
+      category = temp["category"];
+      menu = temp["menu"];
+      location = temp["address"] ?? "null"; // null exception
+      price = "*" * int.parse(temp["price"]);
+      recommend = "*" * int.parse(temp["recommend"]);
+      name = temp["name"];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -277,37 +308,42 @@ class _RestaurantGeneratorState extends State<RestaurantGenerator> {
               )),
           Flexible(
             flex: 4,
-            child: (component == "aa")
+            child: (component == "not-decided")
                 ? Container(
-                    child: Text("dasdsadsd"),
+                    child: Text("Select loaction & click the button"),
                     alignment: Alignment.center,
                   ) // before clicking random
                 : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       // image of restaurant
                       Flexible(
                         flex: 2,
-                        child: Text("dsad"),
+                        child: Text(image_path), // image of menu
                       ),
                       // spec of restaurant
                       Flexible(
                           flex: 3,
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Row(
                                 children: [
-                                  Text("Category Name"),
-                                  Text("Menu : MenuName"),
+                                  Text("Category : $category "),
+                                  Text("Menu : $menu"), // put menu name
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text("location : "),
-                                  Text("location of restaurant"),
+                                  Text("Location : $location"),
                                 ],
                               ),
                               Row(
-                                children: [Text("price : ")],
+                                children: [
+                                  Text("Price : $price "),
+                                  Text(
+                                      "Recommend : $recommend"), // number of stars
+                                ],
                               ),
                             ],
                           )),
@@ -339,7 +375,8 @@ class _RestaurantGeneratorState extends State<RestaurantGenerator> {
                 ),
                 Expanded(child: Text("")),
                 ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      await resGenerate(_selectArea);
                       setState(() {
                         component = _selectArea;
                       });
