@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import "package:flutter/material.dart";
 import 'package:flutter_dotenv/flutter_dotenv.dart'; // for api key
@@ -10,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart'; // for restaturant generator
+import 'package:firebase_storage/firebase_storage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -257,9 +259,11 @@ class _RestaurantGeneratorState extends State<RestaurantGenerator> {
   final _area = ["Osaka", "Tokyo", "Fukuoka", "Kobe", "Nagoya"];
   String _selectArea = "Osaka";
   String component = "not-decided";
+  String randomURL = "";
 
   // For generated info
-  final firestore = FirebaseFirestore.instance;
+  final firestore = FirebaseFirestore.instance; // FireStore
+  // final storageRef = FirebaseStorage.instance.ref(); // FireStorage
   var name = "",
       recommend = "",
       image_path = "",
@@ -268,6 +272,18 @@ class _RestaurantGeneratorState extends State<RestaurantGenerator> {
       location = "",
       price = "";
 
+  getURL(String url) async {
+    await FirebaseStorage.instance
+        .refFromURL("gs://jp-map-storage.appspot.com/Osaka/restaurant1.jpg")
+        .getDownloadURL()
+        .then((String netURL) {
+      randomURL = netURL;
+    });
+    // var temp = url + ".jpg";
+    // randomURL = storageRef.child("Osaka").child(url).getDownloadURL();
+    // gs://jp-map-storage.appspot.com/Osaka/restaurant1.jpg
+  }
+
   // then을 써야 불러 온 다음 행동을 할 수 있는 듯 싶다.
   Future<void> resGenerate(String loac) async {
     int len, randomIndex;
@@ -275,14 +291,15 @@ class _RestaurantGeneratorState extends State<RestaurantGenerator> {
       len = querySnapshot.docs.length;
       randomIndex = Random().nextInt(len);
       var temp = querySnapshot.docs.elementAt(randomIndex);
-      image_path = temp["picture"];
-      category = temp["category"];
-      menu = temp["menu"];
+      image_path = temp["picture"] ?? "null";
+      category = temp["category"] ?? "null";
+      menu = temp["menu"] ?? "null";
       location = temp["address"] ?? "null"; // null exception
       price = "*" * int.parse(temp["price"]);
       recommend = "*" * int.parse(temp["recommend"]);
       name = temp["name"];
     });
+    await getURL(image_path);
   }
 
   @override
@@ -319,7 +336,29 @@ class _RestaurantGeneratorState extends State<RestaurantGenerator> {
                       // image of restaurant
                       Flexible(
                         flex: 2,
-                        child: Text(image_path), // image of menu
+                        // child: Text(image_path), // image of menu
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          child: Image.network(
+                            randomURL,
+                            width: 130,
+                            height: 130,
+                            frameBuilder: (context, child, frame,
+                                wasSynchronouslyLoaded) {
+                              return child;
+                            },
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                       ),
                       // spec of restaurant
                       Flexible(
@@ -330,7 +369,11 @@ class _RestaurantGeneratorState extends State<RestaurantGenerator> {
                               Row(
                                 children: [
                                   Text("Category : $category "),
-                                  Text("Menu : $menu"), // put menu name
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text("Menu : $menu"),
                                 ],
                               ),
                               Row(
